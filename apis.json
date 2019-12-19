@@ -1,0 +1,106 @@
+{
+    "name": "PubNub",
+    "description": "Focus on innovation and launch fast with our realtime APIs and global messaging infrastructure for web, mobile, and Internet of Things.",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/98-pubnub.jpg",
+    "tags": [
+        "api lifeycle",
+        "have api",
+        "networks",
+        "webhook implementations"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/pubnub\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "PubNub",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/98-pubnub.jpg",
+            "humanURL": "https:\/\/www.pubnub.com\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/pubnub-openapi.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Hacker News Search",
+            "url": "PubNub"
+        },
+        {
+            "type": "Stack Exchange Search",
+            "url": "PubNub"
+        },
+        {
+            "type": "Website",
+            "url": "https:\/\/www.pubnub.com\/"
+        },
+        {
+            "type": "Blog",
+            "url": "http:\/\/blog.pubnub.com"
+        },
+        {
+            "type": "Blog RSS",
+            "url": "https:\/\/www.pubnub.com\/blog\/feed\/"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/pubnub"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "http:\/\/www.crunchbase.com\/company\/pubnub"
+        },
+        {
+            "type": "Email",
+            "url": "privacy@pubnub.com"
+        },
+        {
+            "type": "Email",
+            "url": "support@pubnub.com"
+        },
+        {
+            "type": "Github",
+            "url": "https:\/\/github.com\/pubnub"
+        },
+        {
+            "type": "Github",
+            "url": "http:\/\/github.com\/stephenlb"
+        },
+        {
+            "type": "Reddit Search",
+            "url": "PubNub"
+        },
+        {
+            "type": "Support",
+            "url": "https:\/\/github.com\/iexg\/IEX-API"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/pubnub"
+        },
+        {
+            "type": "Webhooks",
+            "url": "https:\/\/developer.github.com\/webhooks\/"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/ub.com"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/pubnub.com"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/github.com"
+        }
+    ]
+}
