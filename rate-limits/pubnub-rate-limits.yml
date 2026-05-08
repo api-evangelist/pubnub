@@ -7,29 +7,40 @@ created: '2026-05-08'
 modified: '2026-05-08'
 reconciled: false
 tags:
-- Realtime
-- WebSockets
-- Pub/Sub
-- IoT
-- Messaging
-- Rate Limiting
-- Quotas
-- Throttling
-description: Placeholder rate-limit artifact for PubNub. Replace with real limits once researched.
-notes: Initial scaffold — limits have not yet been reconciled.
+  - Realtime
+  - Rate Limiting
+description: >-
+  PubNub does not publish per-second rate limits in the same way as competitors because billing
+  is by MAU and transactions are unlimited within tier. Soft fair-use protections apply per
+  publish key (typically 100 publishes per second per channel). Functions invocations are
+  capped per second per function. Throttled responses return HTTP 429.
+notes: PubNub explicitly markets unlimited messaging within plan; soft caps below.
 sources:
-- https://www.pubnub.com/
+  - https://www.pubnub.com/pricing/
+  - https://www.pubnub.com/docs/general/api-reference
 responseCodes:
   throttled: 429
 limits:
-- name: Default
-  scope: account
-  metric: varies
-  limit: see provider documentation
-  notes: Pending reconciliation.
+  - name: Per-channel publish (soft)
+    scope: channel
+    metric: messages_per_second
+    limit: 100
+    notes: Soft fair-use; shard across channels for higher rates.
+  - name: Functions per-instance
+    scope: function
+    metric: invocations_per_second
+    limit: 100
+    notes: Per-deployed-function fair-use.
+  - name: MAU monthly cap
+    scope: account
+    metric: mau_per_month
+    limit: -1
+    notes: Per plan tier; see plans file.
 policies:
-- name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
+  - name: Backoff Strategy
+    description: Honor 429 Retry-After and apply exponential backoff with jitter.
+  - name: Channel sharding
+    description: Use channel groups and sharded channels to scale beyond per-channel publish soft limit.
 maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+  - FN: Kin Lane
+    email: kin@apievangelist.com
