@@ -88,6 +88,27 @@ common:
     url: rate-limits/pubnub-rate-limits.yml
   - type: FinOps
     url: finops/pubnub-finops.yml
+  - type: Integrations
+    url: https://www.pubnub.com/integrations/
+integrations:
+  - name: PubNub
+  - name: JavaScript SDK
+  - name: Java SDK
+  - name: Unreal Engine SDK
+  - name: Kotlin SDK
+  - name: Ruby SDK
+  - name: 'C# SDK'
+  - name: Swift SDK
+  - name: C-core SDK
+  - name: Unity SDK
+  - name: Python SDK
+  - name: PHP SDK
+  - name: GO SDK
+  - name: Rust SDK
+  - name: Objective-C SDK
+  - name: REST API
+  - name: Dart SDK
+  - name: Integrations Hero
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
