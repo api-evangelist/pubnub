@@ -72,6 +72,8 @@ apis:
       - Realtime moderation
       - Webhook fan-out
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/pubnub
   - type: Portal
     url: https://www.pubnub.com/
   - type: Documentation
