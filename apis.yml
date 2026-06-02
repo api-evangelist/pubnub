@@ -13,7 +13,7 @@ tags:
   - Presence
   - Functions
 created: '2026-05-08'
-modified: '2026-05-08'
+modified: '2026-05-29'
 specificationVersion: '0.19'
 description: >-
   PubNub is a realtime communication platform supporting pub/sub, presence, chat, App Context
@@ -41,6 +41,8 @@ apis:
         url: https://www.pubnub.com/docs/general/api-reference
       - type: Pricing
         url: https://www.pubnub.com/pricing/
+      - type: AsyncAPI
+        url: asyncapi/pubnub-asyncapi.yml
     x-features:
       - Publish, subscribe, presence, history, signal
       - Pub/Sub key model

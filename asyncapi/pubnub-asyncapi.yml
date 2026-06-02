@@ -1,0 +1,598 @@
+asyncapi: '2.6.0'
+id: 'urn:com:pubnub:realtime'
+info:
+  title: PubNub Realtime Streaming API
+  version: '3.0.0'
+  description: |
+    AsyncAPI description of PubNub's realtime subscribe surface — the event stream
+    that delivers messages, signals, presence updates, file events, message-action
+    events, and App Context (object) events to subscribed clients.
+
+    Transport note (important honesty disclaimer):
+    PubNub's official public wire protocol is NOT WebSocket. The Subscribe API is
+    delivered over HTTPS as a long-lived long-poll request against ps.pndsn.com.
+    The SDK issues a GET subscribe request; the network either returns immediately
+    with a batch of events (HTTP 200 with a JSON envelope) or holds the request
+    until a long-poll expiration (~280 seconds) and returns an empty batch, after
+    which the SDK reissues the request using the most recent timetoken.
+
+    AsyncAPI is used here to model the EVENT-LEVEL contract (channels, message
+    schemas, presence/object/message-action events) that the SDK exposes to
+    application code via listeners. The underlying transport binding is HTTP
+    long-poll, not WebSocket. PubNub's own documentation describes only the
+    SDK-level listener event objects publicly; the lower-level wire envelope
+    (t/m/e/a/f/i/p/k/c/d/b/u fields) is not formally published and is therefore
+    not modeled in this spec to avoid fabrication.
+
+    Source documentation:
+    - https://www.pubnub.com/docs/general/setup/connection-management
+    - https://www.pubnub.com/docs/general/presence/presence-events
+    - https://www.pubnub.com/docs/general/metadata/basics
+    - https://www.pubnub.com/docs/sdks/javascript/api-reference/publish-and-subscribe
+    - https://www.pubnub.com/docs/sdks/javascript/api-reference/message-actions
+
+    Authentication: publish/subscribe key pair (per keyset). Optional Access
+    Manager auth token via the auth query parameter.
+  contact:
+    name: PubNub Support
+    url: https://support.pubnub.com/
+  license:
+    name: PubNub Terms of Service
+    url: https://www.pubnub.com/legal/terms-of-service/
+  termsOfService: https://www.pubnub.com/legal/terms-of-service/
+
+defaultContentType: application/json
+
+servers:
+  production:
+    url: ps.pndsn.com
+    protocol: https
+    description: |
+      PubNub production edge endpoint. The Subscribe API is a long-poll HTTPS GET
+      under the path /v2/subscribe/{sub-key}/{channels}/0. Despite the realtime
+      semantics modeled by this AsyncAPI document, the underlying binding is
+      HTTPS, NOT WebSocket.
+
+channels:
+  message:
+    description: |
+      Standard published messages delivered to all subscribers of a channel.
+      Received by SDK listeners as a "message" event.
+    subscribe:
+      summary: Receive published messages on a channel.
+      operationId: receiveMessage
+      message:
+        $ref: '#/components/messages/Message'
+
+  signal:
+    description: |
+      Lightweight signals delivered to subscribers of a channel. Signals are
+      capped at 64 bytes of payload and are intended for high-volume, low-latency
+      use cases. Received by SDK listeners as a "signal" event.
+    subscribe:
+      summary: Receive signals on a channel.
+      operationId: receiveSignal
+      message:
+        $ref: '#/components/messages/Signal'
+
+  presence:
+    description: |
+      Presence events for a channel, delivered on the {channel}-pnpres
+      companion channel. Event types include join, leave, timeout, state-change,
+      and interval.
+    subscribe:
+      summary: Receive presence events for a channel.
+      operationId: receivePresence
+      message:
+        oneOf:
+          - $ref: '#/components/messages/PresenceJoin'
+          - $ref: '#/components/messages/PresenceLeave'
+          - $ref: '#/components/messages/PresenceTimeout'
+          - $ref: '#/components/messages/PresenceStateChange'
+          - $ref: '#/components/messages/PresenceInterval'
+
+  file:
+    description: |
+      File events delivered when a file is uploaded to a channel. Subscribers
+      receive a file event containing the file ID, filename, and an optional
+      description.
+    subscribe:
+      summary: Receive file events on a channel.
+      operationId: receiveFile
+      message:
+        $ref: '#/components/messages/FileEvent'
+
+  message-action:
+    description: |
+      Message action events delivered when a reaction or action (e.g. emoji
+      reaction, read receipt) is added to or removed from a previously published
+      message on a channel.
+    subscribe:
+      summary: Receive message action events on a channel.
+      operationId: receiveMessageAction
+      message:
+        $ref: '#/components/messages/MessageActionEvent'
+
+  app-context-events:
+    description: |
+      App Context (object metadata) events delivered when user, channel, or
+      membership metadata is created, updated, or deleted. Event types are
+      "set" or "delete"; entity types are "uuid", "channel", or "membership".
+    subscribe:
+      summary: Receive App Context (object) events.
+      operationId: receiveAppContextEvent
+      message:
+        oneOf:
+          - $ref: '#/components/messages/UuidMetadataEvent'
+          - $ref: '#/components/messages/ChannelMetadataEvent'
+          - $ref: '#/components/messages/MembershipEvent'
+
+components:
+  messages:
+    Message:
+      name: Message
+      title: Published Message
+      summary: A user-published message delivered to channel subscribers.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ListenerMessage'
+
+    Signal:
+      name: Signal
+      title: Signal Event
+      summary: A signal event delivered to channel subscribers (payload ≤ 64 bytes).
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ListenerMessage'
+
+    PresenceJoin:
+      name: PresenceJoin
+      title: Presence Join Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PresenceJoinPayload'
+
+    PresenceLeave:
+      name: PresenceLeave
+      title: Presence Leave Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PresenceLeavePayload'
+
+    PresenceTimeout:
+      name: PresenceTimeout
+      title: Presence Timeout Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PresenceTimeoutPayload'
+
+    PresenceStateChange:
+      name: PresenceStateChange
+      title: Presence State-Change Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PresenceStateChangePayload'
+
+    PresenceInterval:
+      name: PresenceInterval
+      title: Presence Interval Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PresenceIntervalPayload'
+
+    FileEvent:
+      name: FileEvent
+      title: File Upload Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/FileEventPayload'
+
+    MessageActionEvent:
+      name: MessageActionEvent
+      title: Message Action Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MessageActionEventPayload'
+
+    UuidMetadataEvent:
+      name: UuidMetadataEvent
+      title: User (UUID) Metadata Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AppContextEventPayload'
+
+    ChannelMetadataEvent:
+      name: ChannelMetadataEvent
+      title: Channel Metadata Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AppContextEventPayload'
+
+    MembershipEvent:
+      name: MembershipEvent
+      title: Membership Event
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AppContextEventPayload'
+
+  schemas:
+    Timetoken:
+      type: string
+      description: |
+        17-digit PubNub timetoken — number of 100-nanosecond intervals since
+        Unix epoch. Encoded as a string to preserve precision.
+      pattern: '^[0-9]{17}$'
+      example: '15610547826969050'
+
+    ListenerMessage:
+      type: object
+      description: |
+        SDK listener event object delivered for "message" and "signal" events.
+        Fields as documented in the JavaScript SDK publish-and-subscribe API
+        reference.
+      properties:
+        channel:
+          type: string
+          description: The channel ID for which the message belongs.
+        subscription:
+          type: [string, 'null']
+          description: Channel group or wildcard subscription match, if any.
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+          description: Publish timetoken.
+        message:
+          description: The message payload (arbitrary JSON).
+        publisher:
+          type: string
+          description: User ID of the message publisher.
+        userMetadata:
+          type: object
+          description: Optional sender user metadata.
+        meta:
+          type: object
+          description: Optional extra metadata published with the request.
+      required:
+        - channel
+        - timetoken
+        - message
+
+    PresenceJoinPayload:
+      type: object
+      required:
+        - action
+        - channel
+        - subscribedChannel
+        - timetoken
+        - occupancy
+        - uuid
+        - timestamp
+      properties:
+        action:
+          type: string
+          enum: [join]
+        channel:
+          type: string
+        subscribedChannel:
+          type: string
+          description: Companion presence channel (suffix -pnpres).
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        occupancy:
+          type: integer
+        uuid:
+          type: string
+        timestamp:
+          type: integer
+          description: Unix timestamp (seconds).
+      example:
+        action: join
+        channel: chats.room1
+        subscribedChannel: chats.room1-pnpres
+        timetoken: '15119466699655811'
+        occupancy: 2
+        uuid: user123
+        timestamp: 1511946669
+
+    PresenceLeavePayload:
+      type: object
+      required:
+        - action
+        - channel
+        - subscribedChannel
+        - timetoken
+        - occupancy
+        - uuid
+        - timestamp
+      properties:
+        action:
+          type: string
+          enum: [leave]
+        channel:
+          type: string
+        subscribedChannel:
+          type: string
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        occupancy:
+          type: integer
+        uuid:
+          type: string
+        timestamp:
+          type: integer
+      example:
+        action: leave
+        channel: chats.room1
+        subscribedChannel: chats.room1-pnpres
+        timetoken: '15119466699655811'
+        occupancy: 2
+        uuid: user123
+        timestamp: 1511946669
+
+    PresenceTimeoutPayload:
+      type: object
+      required:
+        - action
+        - channel
+        - subscribedChannel
+        - timetoken
+        - occupancy
+        - uuid
+        - timestamp
+      properties:
+        action:
+          type: string
+          enum: [timeout]
+        channel:
+          type: string
+        subscribedChannel:
+          type: string
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        occupancy:
+          type: integer
+        uuid:
+          type: string
+        timestamp:
+          type: integer
+      example:
+        action: timeout
+        channel: chats.room1
+        subscribedChannel: chats.room1-pnpres
+        timetoken: '15119466699655811'
+        occupancy: 2
+        uuid: user123
+        timestamp: 1511946669
+
+    PresenceStateChangePayload:
+      type: object
+      required:
+        - action
+        - channel
+        - subscribedChannel
+        - state
+        - timetoken
+        - occupancy
+        - uuid
+        - timestamp
+      properties:
+        action:
+          type: string
+          enum: [state-change]
+        channel:
+          type: string
+        subscription:
+          type: [string, 'null']
+        actualChannel:
+          type: [string, 'null']
+        subscribedChannel:
+          type: string
+        state:
+          type: object
+          description: Arbitrary JSON state object set by the user.
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        occupancy:
+          type: integer
+        uuid:
+          type: string
+        timestamp:
+          type: integer
+      example:
+        action: state-change
+        channel: room-1
+        subscription: null
+        actualChannel: null
+        subscribedChannel: room-1-pnpres
+        state:
+          mood: grumpy
+        timetoken: '15119477895378127'
+        occupancy: 5
+        uuid: user1
+        timestamp: 1511947789
+
+    PresenceIntervalPayload:
+      type: object
+      description: |
+        Interval event — replaces individual join/leave/timeout events when channel
+        occupancy exceeds the "Announce Max" threshold. With Presence Deltas
+        enabled the event also includes join/leave/timeout arrays of UUIDs that
+        changed since the last interval.
+      required:
+        - action
+        - channel
+        - occupancy
+        - subscribedChannel
+        - timestamp
+        - timetoken
+      properties:
+        action:
+          type: string
+          enum: [interval]
+        channel:
+          type: string
+        occupancy:
+          type: integer
+        join:
+          type: array
+          items:
+            type: string
+          description: UUIDs that joined since the last interval (Presence Deltas).
+        leave:
+          type: array
+          items:
+            type: string
+          description: UUIDs that left since the last interval (Presence Deltas).
+        timeout:
+          type: array
+          items:
+            type: string
+          description: UUIDs that timed out since the last interval (Presence Deltas).
+        subscribedChannel:
+          type: string
+        timestamp:
+          type: integer
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        hereNowRefresh:
+          type: boolean
+          description: |
+            Flag indicating payload size exceeded limits; clients should use the
+            Here Now API to retrieve active User IDs.
+      example:
+        action: interval
+        channel: chats.megachat
+        occupancy: 27
+        join: [user123, user88]
+        leave: [user20, user11, user14]
+        timeout: [user42]
+        subscribedChannel: chats.megachat-pnpres
+        timestamp: 1511947739
+        timetoken: '15119477396210903'
+        hereNowRefresh: false
+
+    FileEventPayload:
+      type: object
+      description: |
+        File event delivered to subscribers when a file is uploaded to a channel.
+        Contains the publishing channel, an optional message description, and
+        the file descriptor (id, name). A download URL can be constructed using
+        the SDK's getFileUrl() method.
+      properties:
+        channel:
+          type: string
+        subscription:
+          type: [string, 'null']
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        publisher:
+          type: string
+        message:
+          description: Optional description published with the file.
+        file:
+          type: object
+          required:
+            - id
+            - name
+          properties:
+            id:
+              type: string
+              description: Unique file identifier.
+            name:
+              type: string
+              description: Filename.
+      required:
+        - channel
+        - file
+
+    MessageActionEventPayload:
+      type: object
+      description: |
+        Message action event payload as documented in the addMessageAction /
+        removeMessageAction API reference. Delivered via subscribe listeners to
+        clients subscribed to the channel.
+      properties:
+        channel:
+          type: string
+        subscription:
+          type: [string, 'null']
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        publisher:
+          type: string
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Action type (e.g. "reaction", "receipt").
+            value:
+              type: string
+              description: Action value (e.g. an emoji name).
+            uuid:
+              type: string
+              description: User ID that added the action.
+            actionTimetoken:
+              $ref: '#/components/schemas/Timetoken'
+            messageTimetoken:
+              $ref: '#/components/schemas/Timetoken'
+      example:
+        data:
+          type: reaction
+          value: smiley_face
+          uuid: user-456
+          actionTimetoken: '15610547826970050'
+          messageTimetoken: '15610547826969050'
+
+    AppContextEventPayload:
+      type: object
+      description: |
+        App Context (object metadata) event envelope. Delivered via subscribe
+        when user, channel, or membership metadata is created, updated, or
+        deleted. Structure as documented at
+        https://www.pubnub.com/docs/general/metadata/basics.
+      required:
+        - channel
+        - message
+        - timetoken
+      properties:
+        channel:
+          type: string
+        subscription:
+          type: [string, 'null']
+        timetoken:
+          $ref: '#/components/schemas/Timetoken'
+        message:
+          type: object
+          required:
+            - source
+            - version
+            - event
+            - type
+          properties:
+            source:
+              type: string
+              enum: [objects]
+            version:
+              type: string
+              example: '2.0'
+            event:
+              type: string
+              enum: [set, delete]
+              description: Operation that occurred.
+            type:
+              type: string
+              enum: [uuid, channel, membership]
+              description: Entity type the event refers to.
+            data:
+              type: object
+              description: Event-specific entity payload.
+      example:
+        channel: sample-channel
+        message:
+          source: objects
+          version: '2.0'
+          event: set
+          type: uuid
+          data: {}
+        subscription: sample-subscription
+        timetoken: '15610547826969050'
