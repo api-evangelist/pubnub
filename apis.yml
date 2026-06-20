@@ -2,7 +2,7 @@ aid: pubnub
 url: https://raw.githubusercontent.com/api-evangelist/pubnub/refs/heads/main/apis.yml
 name: PubNub
 kind: company
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Realtime
   - WebSockets
@@ -30,7 +30,7 @@ apis:
       - Messaging
       - History
       - REST
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://ps.pndsn.com
     humanURL: https://www.pubnub.com/docs/general/api-reference
     description: >-
@@ -58,7 +58,7 @@ apis:
       - Functions
       - Edge Compute
       - Serverless
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://admin.pubnub.com/api/v1/functions
     humanURL: https://www.pubnub.com/docs/general/serverless/functions
     description: Edge serverless functions executed on PubNub's network in response to messages, presence events, or HTTP triggers.
