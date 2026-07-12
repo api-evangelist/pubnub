@@ -74,6 +74,11 @@ apis:
       - Realtime moderation
       - Webhook fan-out
 common:
+  - type: DomainSecurity
+    url: security/pubnub-domain-security.yml
+  - name: Agent Skills
+    url: https://github.com/pubnub/skills
+    type: AgentSkills
   - type: LinkedIn
     url: https://www.linkedin.com/company/pubnub
   - type: Portal
@@ -94,6 +99,8 @@ common:
     url: finops/pubnub-finops.yml
   - type: Integrations
     url: https://www.pubnub.com/integrations/
+  - type: Blog
+    url: https://www.pubnub.com/blog
 integrations:
   - name: PubNub
   - name: JavaScript SDK
