@@ -1,0 +1,21 @@
+{
+  "repo": "pubnub",
+  "feeds": [
+    {
+      "source": "https://www.pubnub.com/blog",
+      "feed_url": "https://www.pubnub.com/blog",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
+      "source": "https://www.pubnub.com/integrations/",
+      "feed_url": "https://www.pubnub.com/integrations/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "fetched": "2026-07-11T11:50:51Z",
+  "post_count": 83
+}
