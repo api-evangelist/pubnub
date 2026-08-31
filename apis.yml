@@ -29,7 +29,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/pubnub.png
 tags:
   - Real-Time
   - WebSockets
-  - Pub-Sub
+  - Pub/Sub
   - IoT
   - Messaging
   - Chat
@@ -57,7 +57,7 @@ apis:
   - aid: pubnub:rest-api
     name: PubNub REST API
     tags:
-      - Pub-Sub
+      - Pub/Sub
       - Presence
       - Messaging
       - History
