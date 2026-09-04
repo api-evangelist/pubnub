@@ -5,4 +5,4 @@ date: "2026-05-26"
 author: ""
 feed_url: "https://www.pubnub.com/blog"
 ---
-Keep inventories, trades, and markets in sync for live service games. How in-game trading sync works with your game backendâand where PubNub fits.
+Keep inventories, trades, and markets in sync for live service games. How in-game trading sync works with your game backendâand where PubNub fits.

@@ -5,4 +5,4 @@ date: "2026-05-29"
 author: ""
 feed_url: "https://www.pubnub.com/blog"
 ---
-P2P marketplaces need more than email alerts. Real-time buyer-seller chat, seller presence, push for offers and shipping, and in-line moderationâso negotiations stay in your app. See how PubNub helps.
+P2P marketplaces need more than email alerts. Real-time buyer-seller chat, seller presence, push for offers and shipping, and in-line moderationâso negotiations stay in your app. See how PubNub helps.
