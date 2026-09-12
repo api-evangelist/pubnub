@@ -112,6 +112,8 @@ apis:
       - Realtime moderation
       - Webhook fan-out
 common:
+  - type: Website
+    url: https://www.pubnub.com/
   - type: DomainSecurity
     url: security/pubnub-domain-security.yml
   - name: Agent Skills
