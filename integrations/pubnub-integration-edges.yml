@@ -5,6 +5,8 @@ checked:
 - https://focus.finops.org/data-generators/
 - https://github.com/cncf/k8s-conformance
 - https://github.com/cncf/landscape
+- https://registry.npmjs.org/-/v1/search?text=keywords:n8n-community-node-package
+- https://zapier.com/api/v4/apps/
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -55,6 +57,58 @@ edges:
     detected_by: sweep-cloud-native.py
     detected: '2026-10-15'
   detected_by: sweep-cloud-native.py
+  first_seen: '2026-10-15'
+- partner_name: Zapier
+  partner: zapier
+  partner_match: aggregator
+  type: marketplace
+  marketplace: zapier-directory
+  channel: ipaas-listing
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://zapier.com/apps/pubnub/integrations
+  category: null
+  contract_reference:
+    register: Zapier app directory (zapier.com/api/v4/apps)
+    spec_file: null
+    role: ipaas-connector:zapier
+    registered_name: PubNub
+    matched_domain: pubnub.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: pubnub
+    beta: false
+    builder: unknown (not in the directory record)
+  detected_by: sweep-workflow-automation.py
+  first_seen: '2026-10-15'
+- partner_name: n8n
+  partner: n8n
+  partner_match: aggregator
+  type: marketplace
+  marketplace: n8n-community
+  channel: open-source-node
+  relationship: ipaas-bridge
+  direction: provider-built
+  evidence: https://www.npmjs.com/package/n8n-nodes-pubnub
+  category: null
+  contract_reference:
+    register: n8n community nodes (npm keyword n8n-community-node-package)
+    spec_file: null
+    role: ipaas-connector:n8n-community
+    registered_name: n8n-nodes-pubnub
+    matched_domain: pubnub.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    package: n8n-nodes-pubnub
+    version: 0.1.16
+    published: '2025-11-25T02:07:55.475Z'
+    matched_on: publisher-email
+    builder: provider (package published from the provider's own domain)
+  detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
 source:
 - https://github.com/cncf/landscape
