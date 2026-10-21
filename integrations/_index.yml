@@ -67,18 +67,6 @@
     builder: provider (package published from the provider's own domain)
   status: not-a-workflow
   arazzo: null
-- slug: pubnub-n8n-n8n-community
-  label: n8n (n8n-community)
-  partner: n8n
-  partner_name: n8n (n8n-community)
-  type: marketplace
-  marketplace: n8n-community
-  channel: partner-built
-  evidence: https://www.npmjs.com/package/n8n-nodes-pubnub
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: pubnub-cncf-cloud-native-landscape
   label: CNCF (Cloud Native Landscape)
   partner: cncf
@@ -111,5 +99,30 @@
       categories, tier and projects are CONTEXT, never read (breadth is not credit)'
     detected_by: sweep-cloud-native.py
     detected: '2026-10-19'
+  status: not-a-workflow
+  arazzo: null
+- slug: pubnub-n8n-n8n-community
+  label: n8n (n8n-community)
+  partner: n8n
+  partner_name: n8n (n8n-community)
+  type: marketplace
+  marketplace: n8n-community
+  channel: partner-built
+  evidence: https://www.npmjs.com/package/n8n-nodes-pubnub
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: pubnub-google-play-developer-google-play-sdk-index
+  label: Google Play Developer (Google Play SDK Index)
+  partner: google-play
+  partner_name: Google Play Developer (Google Play SDK Index)
+  category: mobile SDK (marketing-and-engagement)
+  type: marketplace
+  marketplace: Google Play SDK Index
+  channel: partner-built
+  evidence: https://play.google.com/sdks/details/com-pubnub-pubnub-gson
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
