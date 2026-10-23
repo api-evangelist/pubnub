@@ -9,6 +9,9 @@ checked:
 - https://zapier.com/api/v4/apps/
 - n8n/integrations/n8n-integration-edges.yml
 - google-play/integrations/google-play-integration-edges.yml
+- https://hex.pm/api
+- https://packagist.org/packages
+- https://pub.dev/api
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -144,6 +147,36 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: mobile SDK (marketing-and-engagement)
+- partner_name: pub.dev
+  partner: pub-dev
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Dart/Flutter)
+  evidence: https://pub.dev/packages/pubnub
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: pub.dev (public registry JSON)
+    spec_file: null
+    language: Dart/Flutter
+    packages:
+    - name: pubnub
+      version: 9.1.0
+      released: '2026-10-12'
+      released_field: published
+      lapsed: false
+      page: https://pub.dev/packages/pubnub
+      repo_leg: not required (verified publisher)
+      publisher_leg: verified-publisher:pubnub.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-php-dart-elixir-package-registries.py
+    detected: '2026-10-22'
+  detected_by: sweep-php-dart-elixir-package-registries.py
+  first_seen: '2026-10-22'
 source:
 - https://github.com/cncf/landscape
 - https://github.com/cncf/k8s-conformance
